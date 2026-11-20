@@ -222,14 +222,25 @@ class BibManager(QMainWindow, BaseContextMenu, BaseToolBar, BaseMenuBar, BaseBod
         Args:
             production_ids (list): List of tuples containing (production_id, path) to display.
         """
-        self.table_widget.setRowCount(len(production_ids))
-        for row, (prod_id, path) in enumerate(production_ids):
-            prod = self.data["productions"].get(prod_id, {})
-            if prod:
-                self.table_widget.setItem(row, 0, QTableWidgetItem(prod.get("title", "")))
-                self.table_widget.setItem(row, 1, QTableWidgetItem(prod.get("year", "")))
-                self.table_widget.setItem(row, 2, QTableWidgetItem(prod_id))
-        self.table_widget.resizeColumnsToContents()
+        # Keep row indices stable while populating: with sorting enabled,
+        # setItem() can move a row as soon as its sort-column item is set.
+        sorting_enabled = self.table_widget.isSortingEnabled()
+        sort_column = self.table_widget.horizontalHeader().sortIndicatorSection()
+        sort_order = self.table_widget.horizontalHeader().sortIndicatorOrder()
+        self.table_widget.setSortingEnabled(False)
+        try:
+            self.table_widget.setRowCount(len(production_ids))
+            for row, (prod_id, path) in enumerate(production_ids):
+                prod = self.data["productions"].get(prod_id, {})
+                if prod:
+                    self.table_widget.setItem(row, 0, QTableWidgetItem(prod.get("title", "")))
+                    self.table_widget.setItem(row, 1, QTableWidgetItem(prod.get("year", "")))
+                    self.table_widget.setItem(row, 2, QTableWidgetItem(prod_id))
+            self.table_widget.resizeColumnsToContents()
+        finally:
+            self.table_widget.setSortingEnabled(sorting_enabled)
+            if sorting_enabled:
+                self.table_widget.sortItems(sort_column, sort_order)
 
     def load_metadata(self, prod_data):
         """
