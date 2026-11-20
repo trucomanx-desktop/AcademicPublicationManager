@@ -239,7 +239,7 @@ class BibManager(QMainWindow, BaseContextMenu, BaseToolBar, BaseMenuBar, BaseBod
                     self.table_widget.setItem(row, 0, QTableWidgetItem(str(prod.get("title", "") or "")))
                     self.table_widget.setItem(row, 1, QTableWidgetItem(str(prod.get("year", "") or "")))
                     self.table_widget.setItem(row, 2, QTableWidgetItem(str(prod_id)))
-                    self.table_widget.setItem(row, 3, QTableWidgetItem(str(prod.get("journal", "") or "")))
+                    self.table_widget.setItem(row, 3, QTableWidgetItem(str(prod.get("journal") or prod.get("publisher", "") or "")))
                     self.table_widget.setItem(row, 4, QTableWidgetItem(str(authors or "")))
             self.table_widget.resizeColumnsToContents()
         finally:

@@ -1,4 +1,4 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QSplitter, QScrollArea, QPushButton, QTableWidget, QLineEdit, QMessageBox, QTextEdit, QFormLayout
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QSplitter, QScrollArea, QPushButton, QTableWidget, QLineEdit, QMessageBox, QTextEdit, QFormLayout, QAbstractItemView
 from PyQt5.QtCore import Qt
 
 import json
@@ -68,11 +68,12 @@ class BaseBodyUi:
         bottom_layout = QVBoxLayout(bottom_widget)
         vertical_splitter.addWidget(bottom_widget)
 
-        TITLES = ["Title", "Year", "ID", "Journal", "Authors"]
+        TITLES = ["Title", "Year", "ID", "Journal / Publisher", "Authors"]
 
         self.table_widget = QTableWidget()
         self.table_widget.setColumnCount(len(TITLES))
         self.table_widget.setHorizontalHeaderLabels(TITLES)
+        self.table_widget.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.table_widget.cellClicked.connect(self.on_table_row_clicked)
         self.table_widget.setSortingEnabled(True)
         bottom_layout.addWidget(self.table_widget)
