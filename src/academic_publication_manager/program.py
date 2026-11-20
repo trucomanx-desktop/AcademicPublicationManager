@@ -233,9 +233,14 @@ class BibManager(QMainWindow, BaseContextMenu, BaseToolBar, BaseMenuBar, BaseBod
             for row, (prod_id, path) in enumerate(production_ids):
                 prod = self.data["productions"].get(prod_id, {})
                 if prod:
-                    self.table_widget.setItem(row, 0, QTableWidgetItem(prod.get("title", "")))
-                    self.table_widget.setItem(row, 1, QTableWidgetItem(prod.get("year", "")))
-                    self.table_widget.setItem(row, 2, QTableWidgetItem(prod_id))
+                    authors = prod.get("author", "")
+                    if isinstance(authors, (list, tuple)):
+                        authors = "; ".join(str(author) for author in authors)
+                    self.table_widget.setItem(row, 0, QTableWidgetItem(str(prod.get("title", "") or "")))
+                    self.table_widget.setItem(row, 1, QTableWidgetItem(str(prod.get("year", "") or "")))
+                    self.table_widget.setItem(row, 2, QTableWidgetItem(str(prod_id)))
+                    self.table_widget.setItem(row, 3, QTableWidgetItem(str(prod.get("journal", "") or "")))
+                    self.table_widget.setItem(row, 4, QTableWidgetItem(str(authors or "")))
             self.table_widget.resizeColumnsToContents()
         finally:
             self.table_widget.setSortingEnabled(sorting_enabled)

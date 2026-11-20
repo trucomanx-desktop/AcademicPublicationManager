@@ -68,7 +68,7 @@ class BaseBodyUi:
         bottom_layout = QVBoxLayout(bottom_widget)
         vertical_splitter.addWidget(bottom_widget)
 
-        TITLES = ["Title", "Year", "ID"]
+        TITLES = ["Title", "Year", "ID", "Journal", "Authors"]
 
         self.table_widget = QTableWidget()
         self.table_widget.setColumnCount(len(TITLES))
@@ -183,16 +183,17 @@ class BaseBodyUi:
         """
         Filter the table contents based on the filter input text.
         
-        The filtering is case-insensitive and matches against both title and ID columns.
-        Rows are hidden if they don't contain the filter text in either column.
+        The filtering is case-insensitive and searches every displayed column.
+        Rows are hidden when none of their cells contain the filter text.
         """
-        filter_text = self.filter_input.text().lower()
+        filter_text = self.filter_input.text().casefold()
         for row in range(self.table_widget.rowCount()):
-            title   = self.table_widget.item(row, 0).text().lower() if self.table_widget.item(row, 0) else ""
-            year    = self.table_widget.item(row, 1).text().lower() if self.table_widget.item(row, 1) else ""
-            prod_id = self.table_widget.item(row, 2).text().lower() if self.table_widget.item(row, 2) else ""
-            visible = filter_text in title or filter_text in year or filter_text in prod_id
-            self.table_widget.setRowHidden(row, not visible)
+            row_text = " ".join(
+                self.table_widget.item(row, column).text()
+                for column in range(self.table_widget.columnCount())
+                if self.table_widget.item(row, column) is not None
+            ).casefold()
+            self.table_widget.setRowHidden(row, filter_text not in row_text)
 
 
     def show_context_menu(self):
