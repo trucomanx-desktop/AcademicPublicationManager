@@ -8,12 +8,21 @@ Simple academic publication manager GUI.
 
 To install the package from [PyPI](https://pypi.org/project/academic-publication-manager/), follow the instructions below:
 
+### With pip
 
 ```bash
 pip install --upgrade academic-publication-manager
 ```
 
 Execute `which academic-publication-manager` to see where it was installed, probably in `/home/USERNAME/.local/bin/academic-publication-manager`.
+
+### With pipx (recommended for desktop applications)
+
+```bash
+pipx install academic_publication_manager
+```
+
+If you need to upgrade later: `pipx upgrade academic_publication_manager`
 
 ### Using
 
