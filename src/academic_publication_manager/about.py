@@ -1,6 +1,6 @@
 # about.py
 
-__version__ = "0.1.6"
+__version__ = "0.1.7"
 __package__ = "academic_publication_manager"
 __program_name__ = "academic-publication-manager"
 __author__ = "Fernando Pujaico Rivera" 
