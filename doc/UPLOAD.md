@@ -5,7 +5,7 @@ Simple academic publication manager GUI.
 ## Upload to PYPI
 
 ```bash
-pip install --upgrade pkginfo twine packaging
+pip install --upgrade pkginfo twine packaging build
 
 cd src
 python -m build
